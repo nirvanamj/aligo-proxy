@@ -1,7 +1,7 @@
 
 import axios from 'axios';
 
-export const handler = async (req, res) => {
+const handler = async (req, res) => {
   // POST 메서드 처리
   if (req.method === 'POST') {
     try {
@@ -20,3 +20,5 @@ export const handler = async (req, res) => {
     res.status(405).json({ message: 'Method Not Allowed' });
   }
 };
+
+export default handler;
