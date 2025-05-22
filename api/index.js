@@ -1,23 +1,22 @@
-import axios from "axios";
 
-export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
-  }
+module.exports = async (req, res) => {
+  // POST 메서드 처리
+  if (req.method === 'POST') {
+    try {
+      // 요청 본문(body) 처리
+      const data = req.body;  // 여기서 body 데이터를 처리
 
-  try {
-    const body = req.body;
+      // 예시: 알리고 API로 데이터를 전송
+      // 예시로 다른 API 호출이 필요하면 여기에 코드 추가
 
-    if (!body || typeof body !== "object") {
-      return res.status(400).json({ error: "Invalid request body" });
+      // 성공적으로 데이터를 처리했다면 200 응답
+      res.status(200).json({ message: 'Success', data });
+    } catch (error) {
+      // 오류 발생 시 500 상태 코드와 오류 메시지 반환
+      res.status(500).json({ message: 'Internal Server Error', error: error.message });
     }
-
-    const response = await axios.post("https://apis.aligo.in/send/", null, {
-      params: body,
-    });
-
-    return res.status(200).json(response.data);
-  } catch (err) {
-    return res.status(500).json({ error: err.toString() });
+  } else {
+    // POST가 아닌 다른 메서드에 대해 405 상태 코드 반환
+    res.status(405).json({ message: 'Method Not Allowed' });
   }
-}
+};
