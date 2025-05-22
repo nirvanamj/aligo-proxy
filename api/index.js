@@ -1,11 +1,11 @@
 import axios from "axios";
 
 export default async function handler(req, res) {
-  try {
-    if (req.method !== "POST") {
-      return res.status(405).json({ error: "Method not allowed" });
-    }
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
+  }
 
+  try {
     const body = req.body;
 
     if (!body || typeof body !== "object") {
