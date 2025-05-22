@@ -1,7 +1,5 @@
 
 import axios from 'axios';
-import fs from 'fs';
-import path from 'path';
 
 const handler = async (req, res) => {
   // Favicon 요청 처리
