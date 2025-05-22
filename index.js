@@ -1,21 +1,17 @@
-const express = require("express");
-const app = express();
 const axios = require("axios");
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
-app.post("/", async (req, res) => {
-  const payload = req.body;
+export default async function handler(req, res) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
+  }
 
   try {
     const response = await axios.post("https://apis.aligo.in/send/", null, {
-      params: payload
+      params: req.body,
     });
 
-    res.status(200).send(response.data);
+    res.status(200).json(response.data);
   } catch (err) {
-    res.status(500).send({ error: err.toString() });
+    res.status(500).json({ error: err.toString() });
   }
-});
-
-module.exports = app;
+}
