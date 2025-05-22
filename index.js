@@ -1,6 +1,19 @@
 import axios from 'axios';
+import fs from 'fs';
+import path from 'path';
 
 const handler = async (req, res) => {
+  // Favicon 요청 처리
+  if (req.method === 'GET' && (req.url === '/favicon.ico' || req.url === '/favicon.png')) {
+    const filePath = path.join(__dirname, 'public', req.url); // favicon 파일 경로
+    if (fs.existsSync(filePath)) {
+      res.status(200).sendFile(filePath);
+    } else {
+      res.status(404).json({ message: 'Favicon not found' });
+    }
+    return;
+  }
+
   // POST 메서드만 허용
   if (req.method === 'POST') {
     try {
