@@ -1,18 +1,30 @@
 
 import axios from 'axios';
+import fs from 'fs';
+import path from 'path';
 
 const handler = async (req, res) => {
-  // POST 메서드 처리
+  // Favicon 요청 처리
+  if (req.method === 'GET' && (req.url === '/favicon.ico' || req.url === '/favicon.png')) {
+    const filePath = path.join(__dirname, 'public', req.url); // favicon 파일 경로
+    if (fs.existsSync(filePath)) {
+      res.status(200).sendFile(filePath);
+    } else {
+      res.status(404).json({ message: 'Favicon not found' });
+    }
+    return;
+  }
+
+  // POST 메서드만 허용
   if (req.method === 'POST') {
     try {
-      const data = req.body; // 여기서 body 데이터를 처리
+      const data = req.body; // Body 데이터를 처리
 
       // 예시: 알리고 API로 데이터를 전송
-      // 예시로 다른 API 호출이 필요하면 여기에 코드 추가
+      // 필요한 API 호출을 여기에 추가
 
       res.status(200).json({ message: 'Success', data });
     } catch (error) {
-      // 오류 발생 시 500 상태 코드와 오류 메시지 반환
       res.status(500).json({ message: 'Internal Server Error', error: error.message });
     }
   } else {
